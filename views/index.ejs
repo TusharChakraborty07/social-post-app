@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body>
+    <div
+      class="w-full min-h-screen bg-zinc-900 flex items-center justify-center"
+    >
+      <form
+        action="/create"
+        method="post"
+        class="bg-zinc-800 p-8 rounded-xl w-96 shadow-lg space-y-4"
+      >
+        <h2 class="text-white text-2xl font-semibold text-center mb-4">
+          Create Account
+        </h2>
+
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter Your Name"
+          class="w-full p-2 rounded bg-transparent border border-zinc-600 text-white placeholder-zinc-400 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+        />
+
+        <input
+          type="text"
+          name="age"
+          placeholder="Enter Your Age"
+          class="w-full p-2 rounded bg-transparent border border-zinc-600 text-white placeholder-zinc-400 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+        />
+
+        <input
+          type="text"
+          name="username"
+          placeholder="Enter Your Username"
+          class="w-full p-2 rounded bg-transparent border border-zinc-600 text-white placeholder-zinc-400 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+        />
+
+        <input
+          type="text"
+          name="email"
+          placeholder="Enter Your Email"
+          class="w-full p-2 rounded bg-transparent border border-zinc-600 text-white placeholder-zinc-400 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+        />
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Enter Your Password"
+          class="w-full p-2 rounded bg-transparent border border-zinc-600 text-white placeholder-zinc-400 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+        />
+
+        <input
+          type="submit"
+          value="Create"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white p-2 rounded cursor-pointer font-semibold transition"
+        />
+      </form>
+    </div>
+  </body>
+</html>
