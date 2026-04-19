@@ -40,7 +40,7 @@ app.post("/register", async (req, res) => {
 
       const token = jwt.sign({ email: email, userid: user._id }, "SECRET_KEY");
       res.cookie("token", token);
-      res.send("User Created Sucessfully");
+      res.render("profile", { user });
     });
   });
 });
@@ -61,52 +61,58 @@ app.post("/login", async (req, res) => {
     if (result) {
       const token = jwt.sign({ email: email, userid: user._id }, "SECRET_KEY");
       res.cookie("token", token);
-      res.status(200).send("Login sucessfully!");
+      res.status(200).redirect("/profile");
     } else {
       return res.status(500).send("Password does not match!");
     }
   });
 });
 
-// Login
+// Logout
 app.get("/logout", (req, res) => {
-  res.clearCookie("token");
+  // res.clearCookie("token");
+  res.cookie("token", "");
   res.redirect("/login");
 });
 
 // Protected Route
-// const isLoggedIn = (req, res, next) => {
-//   if (req.cookies.token === "") {
-//     res.send("You must be login first");
-//   } else {
-//     const data = jwt.verify(req.cookies.token, "SECRET_KEY");
-//     req.user = data;
-//   }
-//   next();
-// };
-
 const isLoggedIn = (req, res, next) => {
-  const token = req.cookies.token;
-
-  if (!token) {
-    return res.status(401).send("You must be logged in first");
-  }
-
-  try {
-    const data = jwt.verify(token, "SECRET_KEY");
+  if (req.cookies.token === "") {
+    return res.send("You must be login first");
+  } else {
+    const data = jwt.verify(req.cookies.token, "SECRET_KEY");
     req.user = data;
     next();
-  } catch (err) {
-    return res.status(401).send("Invalid token");
   }
 };
 
 // Profile
-app.get("/profile", isLoggedIn, (req, res) => {
-  console.log(req.user);
-  res.send(req.user);
+app.get("/profile", isLoggedIn, async (req, res) => {
+  const user = await userModel
+    .findOne({ email: req.user.email })
+    .populate("posts");
+  res.render("profile", { user });
 });
 
+// Post
+app.post("/post", isLoggedIn, async (req, res) => {
+  const user = await userModel.findOne({ email: req.user.email });
+
+  const content = req.body.content;
+
+  const post = await postModel.create({
+    user: user._id,
+    content: content,
+  });
+
+  user.posts.push(post._id);
+  await user.save();
+
+  res.redirect("/profile");
+});
+
+
+// Server
 app.listen(3000, () => {
   console.log("Server is running...");
 });
